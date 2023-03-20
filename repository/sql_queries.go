@@ -6,8 +6,8 @@ const (
 					RETURNING *`
 
 	update = `UPDATE account 
-					SET first_name = COALESCE(NULLIF($1, ''), title),
-						last_name = COALESCE(NULLIF($2, ''), content), 
+					SET first_name = COALESCE(NULLIF($1, ''), first_name),
+						last_name = COALESCE(NULLIF($2, ''), last_name) 
 					WHERE id = $3
 					RETURNING *`
 

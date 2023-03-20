@@ -8,6 +8,7 @@ import (
 	"goWebService/repository"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type Handlers interface {
@@ -45,20 +46,58 @@ func (a accountHandler) Save() echo.HandlerFunc {
 }
 
 func (a accountHandler) Update() echo.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
+	return func(c echo.Context) error {
+		account := &models.AccountModel{}
+		if err := c.Bind(account); err != nil {
+			log.Printf("AccountHandler.Save: %v", err)
+			return c.JSON(http.StatusBadRequest, BadRequest)
+		}
+
+		updatedAccount, err := a.repository.Update(c.Request().Context(), account)
+		if err != nil {
+			log.Printf("AccountHandler.Update: %v", err)
+			return c.JSON(http.StatusBadRequest, BadRequest)
+		}
+
+		return c.JSON(http.StatusCreated, updatedAccount)
+	}
 }
 
 func (a accountHandler) GetByID() echo.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			log.Printf("AccountHandler.GetByID: %v", err)
+			return c.JSON(http.StatusBadRequest, BadRequest)
+		}
+
+		account, err := a.repository.GetById(c.Request().Context(), id)
+		return c.JSON(http.StatusOK, account)
+	}
 }
 
 func (a accountHandler) Delete() echo.HandlerFunc {
-	//TODO implement me
-	panic("implement me")
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			log.Printf("AccountHandler.Delete: %v", err)
+			return c.JSON(http.StatusBadRequest, BadRequest)
+		}
+
+		err = a.repository.DeleteById(c.Request().Context(), id)
+		if err != nil {
+			log.Printf("AccountHandler.Delete: %v", err)
+			return c.JSON(http.StatusBadRequest, BadRequest)
+		}
+		return c.JSON(http.StatusOK, Success)
+	}
+}
+
+type SuccessResponse struct {
+	s string
 }
 
 var (
 	BadRequest = errors.New("Bad request")
+	Success    = &SuccessResponse{"Success"}
 )

@@ -7,7 +7,7 @@ import (
 
 func AccountRoutes(accountGroup *echo.Group, h handler.Handlers) {
 	accountGroup.POST("/save", h.Save())
-	accountGroup.PUT("/update/:id", h.Update())
+	accountGroup.PUT("/update", h.Update())
 	accountGroup.DELETE("/delete/:id", h.Delete())
-	accountGroup.GET("/:id", h.GetByID())
+	accountGroup.GET("/get/:id", h.GetByID())
 }
