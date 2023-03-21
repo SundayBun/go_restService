@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go.uber.org/zap"
 	"goWebService/config"
 	"goWebService/repository"
 	"goWebService/server"
@@ -20,7 +21,14 @@ func main() {
 		log.Printf("Postgres connected, Status: %#v", psqlDB.Stats())
 	}
 
-	serv := server.NewServer(cfg, psqlDB)
+	logger, err := zap.NewProduction()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	sugar := logger.Sugar()
+
+	serv := server.NewServer(cfg, psqlDB, sugar)
 	if err = serv.Run(); err != nil {
 		log.Fatal(err)
 	}

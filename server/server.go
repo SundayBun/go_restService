@@ -4,9 +4,11 @@ import (
 	"context"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 	"goWebService/config"
 	"goWebService/handler"
 	"goWebService/http"
+	"goWebService/middleware"
 	"goWebService/repository"
 	"log"
 	http3 "net/http"
@@ -17,16 +19,21 @@ import (
 )
 
 type Server struct {
-	cfg  *config.Config
-	echo *echo.Echo
-	db   *sqlx.DB
+	cfg    *config.Config
+	echo   *echo.Echo
+	db     *sqlx.DB
+	logger *zap.SugaredLogger
 }
 
-func NewServer(cfg *config.Config, db *sqlx.DB) *Server {
-	return &Server{cfg: cfg, echo: echo.New(), db: db}
+func NewServer(cfg *config.Config, db *sqlx.DB, logger *zap.SugaredLogger) *Server {
+	return &Server{cfg: cfg, echo: echo.New(), db: db, logger: logger}
 }
 
 func (s Server) Run() error {
+
+	mw := middleware.NewMiddlewareManager(s.cfg, s.logger)
+
+	s.echo.Use(mw.RequestLoggerMiddleware)
 
 	server := &http3.Server{
 
