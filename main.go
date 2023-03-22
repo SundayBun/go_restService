@@ -9,6 +9,16 @@ import (
 	"os"
 )
 
+// @title Go REST API
+// @version 1.0
+// @description Golang REST API
+
+// @contact.name SundayBun
+// @contact.url https://github.com/SundayBun
+// @contact.email @gmail.com
+
+// @BasePath /api/v1
+
 func main() {
 	log.Println("Starting api server")
 

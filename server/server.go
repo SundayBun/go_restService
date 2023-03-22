@@ -4,8 +4,10 @@ import (
 	"context"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
 	"go.uber.org/zap"
 	"goWebService/config"
+	_ "goWebService/docs"
 	"goWebService/handler"
 	"goWebService/http"
 	"goWebService/middleware"
@@ -34,6 +36,8 @@ func (s Server) Run() error {
 	mw := middleware.NewMiddlewareManager(s.cfg, s.logger)
 
 	s.echo.Use(mw.RequestLoggerMiddleware)
+
+	s.echo.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	server := &http3.Server{
 

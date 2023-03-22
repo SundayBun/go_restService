@@ -1,0 +1,88 @@
+basePath: /api/v1
+definitions:
+  models.AccountModel:
+    properties:
+      firstName:
+        type: string
+      id:
+        type: integer
+      lastName:
+        type: string
+    type: object
+info:
+  contact:
+    email: '@gmail.com'
+    name: SundayBun
+    url: https://github.com/SundayBun
+  description: Golang REST API
+  title: Go REST API
+  version: "1.0"
+paths:
+  /account/delete/{id}:
+    get:
+      description: Delete by id account handler
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AccountModel'
+      summary: Delete account by id
+      tags:
+      - Account
+  /account/get/{id}:
+    get:
+      description: Get by id account handler
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AccountModel'
+      summary: Get account by id
+      tags:
+      - Account
+  /account/save:
+    post:
+      consumes:
+      - application/json
+      description: Save account handler
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AccountModel'
+      summary: Create account
+      tags:
+      - Account
+    put:
+      consumes:
+      - application/json
+      description: Update account handler
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AccountModel'
+      summary: Update account
+      tags:
+      - Account
+swagger: "2.0"

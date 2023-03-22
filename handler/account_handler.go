@@ -27,6 +27,14 @@ func NewAccountHandler(cfg *config.Config, repository repository.Repository) Han
 	return &accountHandler{cfg: cfg, repository: repository}
 }
 
+// Create godoc
+// @Summary Create account
+// @Description Save account handler
+// @Tags Account
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.AccountModel
+// @Router /account/save [post]
 func (a accountHandler) Save() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		account := &models.AccountModel{}
@@ -45,6 +53,13 @@ func (a accountHandler) Save() echo.HandlerFunc {
 	}
 }
 
+// @Summary Update account
+// @Description Update account handler
+// @Tags Account
+// @Accept json
+// @Produce json
+// @Success 200 {object} models.AccountModel
+// @Router /account/save [put]
 func (a accountHandler) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		account := &models.AccountModel{}
@@ -63,6 +78,13 @@ func (a accountHandler) Update() echo.HandlerFunc {
 	}
 }
 
+// @Summary Get account by id
+// @Description Get by id account handler
+// @Tags Account
+// @Produce json
+// @Param id path int true "id"
+// @Success 200 {object} models.AccountModel
+// @Router /account/get/{id} [get]
 func (a accountHandler) GetByID() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
@@ -76,6 +98,13 @@ func (a accountHandler) GetByID() echo.HandlerFunc {
 	}
 }
 
+// @Summary Delete account by id
+// @Description Delete by id account handler
+// @Tags Account
+// @Produce json
+// @Param id path int true "id"
+// @Success 200 {object} models.AccountModel
+// @Router /account/delete/{id} [get]
 func (a accountHandler) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
