@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Postgres PostgresConfig
 	Server   ServerConfig
+	Metrics  Metrics
 }
 
 // Server config struct
@@ -40,6 +41,12 @@ type PostgresConfig struct {
 	ConnMaxLifetime int
 	MaxIdleConns    int
 	ConnMaxIdleTime int
+}
+
+// Metrics config
+type Metrics struct {
+	URL         string
+	ServiceName string
 }
 
 // Load config file from given path

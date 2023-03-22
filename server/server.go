@@ -11,6 +11,7 @@ import (
 	"goWebService/handler"
 	"goWebService/http"
 	"goWebService/middleware"
+	"goWebService/pkg"
 	"goWebService/repository"
 	"log"
 	http3 "net/http"
@@ -36,6 +37,9 @@ func (s Server) Run() error {
 	mw := middleware.NewMiddlewareManager(s.cfg, s.logger)
 
 	s.echo.Use(mw.RequestLoggerMiddleware)
+
+	metric := s.createMetrics()
+	s.echo.Use(mw.MetricsMiddleware(metric))
 
 	s.echo.GET("/swagger/*", echoSwagger.WrapHandler)
 
@@ -68,6 +72,19 @@ func (s Server) Run() error {
 
 	log.Printf("Server Exited Properly")
 	return s.echo.Server.Shutdown(ctx)
+}
+
+func (s Server) createMetrics() pkg.Metrics {
+	metrics, err := pkg.CreateMetrics(s.cfg.Metrics.URL, s.cfg.Metrics.ServiceName)
+	if err != nil {
+		s.logger.Errorf("CreateMetrics Error: %s", err)
+	}
+	s.logger.Info(
+		"Metrics available URL: %s, ServiceName: %s",
+		s.cfg.Metrics.URL,
+		s.cfg.Metrics.ServiceName,
+	)
+	return metrics
 }
 
 const (
