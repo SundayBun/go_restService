@@ -46,7 +46,6 @@ func main() {
 }
 
 func initConfig() *config.Config {
-	os.Setenv("config", "local")
 
 	configPath := GetConfigPath(os.Getenv("config"))
 

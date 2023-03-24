@@ -1,6 +1,22 @@
 version: "3.8"
 
 services:
+  web:
+    container_name: api
+    build: .
+    ports:
+      - "5000:5000"
+      - "7070:7070"
+    environment:
+      - PORT=5000
+#    depends_on:
+#      - postgesql
+    restart: always
+    volumes:
+      - ./:/app
+    networks:
+      - web_api
+
   prometheus:
     container_name: prometheus_container
     image: prom/prometheus
